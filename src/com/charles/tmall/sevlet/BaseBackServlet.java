@@ -29,7 +29,6 @@ import com.charles.tmall.dao.UserDao;
 import com.charles.tmall.sevlet.interfaces.IBaseTask;
 import com.charles.tmall.utils.Page;
 
-
 /**
  * Servlet implementation class BaseBackServlet
  */
@@ -80,10 +79,11 @@ public abstract class BaseBackServlet extends HttpServlet implements IBaseTask {
 		int start = 0;
 		int count = 5;
 		try {
-			if (request.getParameter("page.start") != null && request.getParameter("page.count") != null){
+			if (request.getParameter("page.start") != null)
 				start = Integer.parseInt(request.getParameter("page.start"));
+
+			if (request.getParameter("page.count") != null)
 				count = Integer.parseInt(request.getParameter("page.count"));
-			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,13 +93,13 @@ public abstract class BaseBackServlet extends HttpServlet implements IBaseTask {
 		/* 借助反射，调用对应的方法 */
 		String method = request.getParameter("method");
 		method = (String) request.getSession().getAttribute("method");
-		System.out.println("method:"+method);
+		System.out.println("method:" + method);
 		String redirect = "";
 		Method m;
 		try {
 			m = this.getClass().getMethod(method, HttpServletRequest.class, HttpServletResponse.class, Page.class);
 			redirect = m.invoke(this, request, response, page).toString();
-			System.out.println("redirect:"+redirect);
+			System.out.println("redirect:" + redirect);
 			/* 根据方法的返回值，进行相应的客户端跳转，服务端跳转，或者仅仅是输出字符串 */
 
 			if (redirect.startsWith("@")) {

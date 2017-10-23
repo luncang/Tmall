@@ -15,7 +15,8 @@ public class Page {
 	}
 
 	public boolean isHasNext() {
-		return start == getLast();
+		System.out.println("start:"+start+",last:"+getLast());
+		return start < getLast();
 	}
 
 	public int getTotalPage() {
